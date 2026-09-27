@@ -20,9 +20,13 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @ApiOperation({ summary: 'Lấy thông tin tài khoản đang đăng nhập' })
-  @ApiResponse({ status: 200, description: 'Thông tin tài khoản từ payload JWT' })
+  @ApiResponse({
+    status: 200,
+    description:
+      'Hồ sơ đầy đủ lấy từ DB: họ tên, email, vai trò và thông tin thẻ thư viện nếu là sinh viên',
+  })
   @Get('me')
   getProfile(@Request() req: any) {
-    return req.user;
+    return this.authService.getProfile(req.user.sub);
   }
 }

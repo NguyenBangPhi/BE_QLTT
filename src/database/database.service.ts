@@ -16,6 +16,10 @@ export class DatabaseService implements OnModuleInit, OnModuleDestroy {
       user: this.configService.get<string>('DB_USER', 'root'),
       password: this.configService.get<string>('DB_PASSWORD', ''),
       database: this.configService.get<string>('DB_NAME', 'QuanLyThuVien'),
+      // Toàn bộ nghiệp vụ dùng cột DATE (NgayHenTra, NgayMuon, NgayCapThe...). Nếu để mysql2
+      // dựng Date object, JSON.stringify sẽ đổi sang UTC và lùi mất một ngày do timezone +07:00
+      // ("2024-09-01" thành "2024-08-31T17:00:00.000Z"). Trả thẳng chuỗi để tránh lệch ngày.
+      dateStrings: true,
       waitForConnections: true,
       connectionLimit: 10,
       queueLimit: 0,

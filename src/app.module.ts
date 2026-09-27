@@ -10,6 +10,7 @@ import { BooksModule } from './books/books.module';
 import { BorrowModule } from './borrow/borrow.module';
 import { StatsModule } from './stats/stats.module';
 import { SystemModule } from './system/system.module';
+import { HealthModule } from './health/health.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -26,6 +27,7 @@ import { AppService } from './app.service';
     BorrowModule,
     StatsModule,
     SystemModule,
+    HealthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

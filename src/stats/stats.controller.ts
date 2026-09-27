@@ -27,7 +27,9 @@ export class StatsController {
     return this.statsService.getOverdue();
   }
 
-  @Roles('Admin')
+  // Thủ thư cần đọc SO_NGAY_MUON_TOI_DA và TIEN_PHAT_MOT_NGAY ở màn quầy mượn trả.
+  // Quyền cập nhật vẫn chỉ dành cho Admin đúng như đặc tả.
+  @Roles('Admin', 'Thủ thư')
   @ApiOperation({ summary: 'Danh sách cấu hình' })
   @Get('configs')
   getConfigs() {

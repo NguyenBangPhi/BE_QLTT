@@ -35,4 +35,23 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  async getProfile(maNguoiDung: number) {
+    const rows = await this.databaseService.query<any[]>(
+      `SELECT nd.MaNguoiDung, nd.TenDangNhap, nd.HoTen, nd.Email, nd.TrangThai, nd.NgayTao,
+              v.TenVaiTro,
+              sv.MaSV, sv.Lop, sv.Khoa, sv.NgayCapThe, sv.NgayHetHanThe, sv.TrangThaiThe
+       FROM NguoiDung nd
+       JOIN VaiTro v ON v.MaVaiTro = nd.MaVaiTro
+       LEFT JOIN SinhVien sv ON sv.MaNguoiDung = nd.MaNguoiDung
+       WHERE nd.MaNguoiDung = ?`,
+      [maNguoiDung],
+    );
+
+    if (rows.length === 0) {
+      throw new UnauthorizedException('Tài khoản không còn tồn tại.');
+    }
+
+    return rows[0];
+  }
 }
