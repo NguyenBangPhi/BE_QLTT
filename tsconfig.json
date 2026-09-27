@@ -18,5 +18,10 @@
     "strict": true,
     "strictPropertyInitialization": false,
     "types": ["node"]
+  },
+  "watchOptions": {
+    "watchFile": "priorityPollingInterval",
+    "watchDirectory": "dynamicPriorityPolling",
+    "fallbackPolling": "dynamicPriority"
   }
 }

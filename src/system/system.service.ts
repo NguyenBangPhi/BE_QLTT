@@ -10,10 +10,12 @@ export class SystemService {
 
   async getLogs(page = 1, limit = 50) {
     const offset = (page - 1) * limit;
-    return this.db.query(
-      'SELECT * FROM Log_HeThong ORDER BY ThoiGian DESC LIMIT ? OFFSET ?',
+    const countRows = await this.db.query<any[]>('SELECT COUNT(*) AS total FROM Log_HeThong');
+    const data = await this.db.query(
+      'SELECT * FROM Log_HeThong ORDER BY ThoiGian DESC, MaLog DESC LIMIT ? OFFSET ?',
       [limit, offset]
     );
+    return { data, total: Number(countRows[0].total), page, limit };
   }
 
   async getNotifications(maSV: string) {

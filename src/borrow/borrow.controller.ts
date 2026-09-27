@@ -30,7 +30,42 @@ export class BorrowController {
   }
 
   @Roles('Admin', 'Thủ thư')
-  @ApiOperation({ summary: 'Cập nhật tiền phạt' })
+  @ApiOperation({
+    summary: 'Danh sách chi tiết mượn/trả',
+    description:
+      'Trả về MaCTPM nên dùng được cho màn điều chỉnh tiền phạt của sách đã trả. ' +
+      'Lọc trangThai=1 để xem đang mượn, trangThai=0 để xem đã trả.',
+  })
+  @ApiQuery({ name: 'maSV', required: false })
+  @ApiQuery({ name: 'keyword', required: false, description: 'Tìm theo họ tên, mã SV, tên sách hoặc ISBN' })
+  @ApiQuery({ name: 'trangThai', required: false, type: Number, description: '1: đang mượn, 0: đã trả' })
+  @ApiQuery({ name: 'tuNgay', required: false, description: 'Lọc theo NgayMuon, dạng YYYY-MM-DD' })
+  @ApiQuery({ name: 'denNgay', required: false, description: 'Lọc theo NgayMuon, dạng YYYY-MM-DD' })
+  @ApiQuery({ name: 'page', required: false, type: Number })
+  @ApiQuery({ name: 'limit', required: false, type: Number })
+  @Get('borrow')
+  findAll(
+    @Query('maSV') maSV?: string,
+    @Query('keyword') keyword?: string,
+    @Query('trangThai', new ParseIntPipe({ optional: true })) trangThai?: number,
+    @Query('tuNgay') tuNgay?: string,
+    @Query('denNgay') denNgay?: string,
+    @Query('page', new ParseIntPipe({ optional: true })) page?: number,
+    @Query('limit', new ParseIntPipe({ optional: true })) limit?: number,
+  ) {
+    return this.borrowService.findAll({
+      maSV,
+      keyword,
+      trangThai,
+      tuNgay,
+      denNgay,
+      page: page || 1,
+      limit: limit || 50,
+    });
+  }
+
+  @Roles('Admin', 'Thủ thư')
+  @ApiOperation({ summary: 'Cập nhật tiền phạt và ghi chú' })
   @Put('borrow/fines/:id')
   updateFine(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdateFineDto) {
     return this.borrowService.updateFine(id, dto);

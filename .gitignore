@@ -37,3 +37,6 @@ lerna-debug.log*
 .env
 .env.test
 .env.production
+
+# Build artifact cua TypeScript incremental, tu sinh moi lan compile
+*.tsbuildinfo
